@@ -9,37 +9,35 @@ typedef struct {
     char sexo;
 } ALUNO;
 
-ALUNO aula[500];  // Array global para armazenar os dados dos alunos
+ALUNO users[500];  
 
-// Função para cadastrar um aluno no arquivo
-void cadastrarAluno(FILE *aulas) {
+void cadastrarUsuario(FILE *dadosUsuarios) {
     char nome[50], sexo;
     int idade;
 
     printf("Digite o nome, idade e sexo (M/F): ");
     scanf("%s %d %c", nome, &idade, &sexo);
 
-    fprintf(aulas, "%s ; %d ; %c\n", nome, idade, sexo);
+    fprintf(dadosUsuarios, "%s ; %d ; %c\n", nome, idade, sexo);
 }
 
-// Função para calcular médias e encontrar a idade mais próxima da média
-void calcularMedias(FILE *aulas, FILE *relatorio) {
+void calcularMedias(FILE *dadosUsuarios,FILE *relatorio) {
     int cont = 0;
-    while (fscanf(aulas, "%s ; %d ; %c\n", aula[cont].nome, &aula[cont].idade, &aula[cont].sexo) != EOF) {
+    rewind(dadosUsuarios);
+    while (fscanf(dadosUsuarios, "%s ; %d ; %c\n", users[cont].nome, &users[cont].idade, &users[cont].sexo) != EOF) {
+        printf("%s ; %d ; %c\n",users[cont].nome, users[cont].idade, users[cont].sexo);
         cont++;
     }
-    printf("%s ; %d ; %c\n",aula[cont].nome, aula[cont].idade, aula[cont].sexo);
-
-    // Cálculo das médias para homens e mulheres
+    
     float somaM = 0, somaF = 0;
     int contM = 0, contF = 0;
 
     for (int i = 0; i < cont; i++) {
-        if (aula[i].sexo == 'M') {
-            somaM += aula[i].idade;
+        if (users[i].sexo == 'M') {
+            somaM += users[i].idade;
             contM++;
-        } else if (aula[i].sexo == 'F') {
-            somaF += aula[i].idade;
+        } else if (users[i].sexo == 'F') {
+            somaF += users[i].idade;
             contF++;
         }
     }
@@ -48,33 +46,33 @@ void calcularMedias(FILE *aulas, FILE *relatorio) {
     float mediaF = somaF / contF;
 
     float media_da_media = (mediaM + mediaF) / 2;
-    int idadeMaisProxima = aula[0].idade;
+    int idadeMaisProxima = users[0].idade;
     char nomeMaisProxima[50];
 
-    float diff = fabs(media_da_media - aula[0].idade);
+    float diff = fabs(media_da_media - users[0].idade);
 
     for(int i = 1; i < cont; i++) {
-        if (fabs(media_da_media - aula[i].idade) < diff) {
-            diff = fabs(media_da_media - aula[i].idade);
-            idadeMaisProxima = aula[i].idade;
-            strcpy(nomeMaisProxima, aula[i].nome);
+        if (fabs(media_da_media - users[i].idade) < diff) {
+            diff = fabs(media_da_media - users[i].idade);
+            idadeMaisProxima = users[i].idade;
+            strcpy(nomeMaisProxima, users[i].nome);
         }
     }
-    //printf("mediaM: %f, mediaF: %f, nomeMaisProxima: %s, idadeMaisProxima: %d",mediaM, mediaF, nomeMaisProxima, idadeMaisProxima);
+    
     relatorio = fopen("relatorio.txt", "w+");
     fprintf(relatorio, "Masculino: %f\nFeminino: %f\n%s: %d", mediaM, mediaF, nomeMaisProxima, idadeMaisProxima);
     fclose(relatorio);
 }
 
 int main() {
-    FILE *aulas;
+    FILE *dadosUsuarios;
     FILE *relatorio;
 
     int op;
     
-    aulas = fopen("aula.txt", "w+");  // Abre o arquivo para escrita e leitura
+    dadosUsuarios = fopen("aula.txt", "w+");  
 
-    if (aulas == NULL) {
+    if (dadosUsuarios == NULL) {
         printf("Erro ao abrir o arquivo.\n");
         return 1;
     }
@@ -84,7 +82,7 @@ int main() {
 
     while (op != 2) {
         if (op == 1) {
-            cadastrarAluno(aulas);
+            cadastrarUsuario(dadosUsuarios);
         } else {
             printf("Opção inválida. Tente novamente.\n");
         }
@@ -92,8 +90,8 @@ int main() {
         scanf("%d", &op);
     }
 
-    calcularMedias(aulas, relatorio);
+    calcularMedias(dadosUsuarios,relatorio);
 
-    fclose(aulas);
+    fclose(dadosUsuarios);
     return 0;
 }
