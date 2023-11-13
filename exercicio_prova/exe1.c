@@ -7,9 +7,9 @@ typedef struct {
     char nome[50];
     int idade;
     char sexo;
-} ALUNO;
+} USER;
 
-ALUNO users[500];  
+USER users[500];  
 
 void cadastrarUsuario(FILE *dadosUsuarios) {
     char nome[50], sexo;
