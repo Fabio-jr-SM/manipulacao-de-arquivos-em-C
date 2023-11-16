@@ -12,8 +12,9 @@ int cont=0;
 
 void cadastrarAluno(FILE *aluno){
     printf("Digite a matricula, nome e media do aluno: ");
-    scanf("%d %s %f",&dadosAluno[cont].matricula)
-    
+    scanf("%d %s %f",&dadosAluno[cont].matricula,dadosAluno[cont].nome,&dadosAluno[cont].nota_media);
+    fprintf(aluno,"%d; %s; %f\n",dadosAluno[cont].matricula,dadosAluno[cont].nome,dadosAluno[cont].nota_media);
+    cont++;
 }
 
 
@@ -29,7 +30,7 @@ void buscaPorMatricula(){
 int main() {
     FILE *aluno;
     int op;
-    
+    aluno = fopen("aluno.txt","w+");
     if(aluno==NULL){
         printf("Erro ao abrir o arquivo!");
         return 1;
