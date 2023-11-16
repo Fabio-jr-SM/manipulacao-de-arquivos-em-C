@@ -1,3 +1,5 @@
+//exercico 1 corrigido pelo professor
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
