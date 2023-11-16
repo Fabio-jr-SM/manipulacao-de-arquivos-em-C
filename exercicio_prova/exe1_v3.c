@@ -1,3 +1,5 @@
+//Arquivo aula.txt já criado e é aberto somente no odo leitura
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
