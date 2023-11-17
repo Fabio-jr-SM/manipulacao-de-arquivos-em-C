@@ -2,6 +2,8 @@
 #include <string.h>
 #include "imprime.h"
 
+
+//Validar CPF
 int validarCPF(char *cpf)
 {
     int i, j, digito1 = 0, digito2 = 0;
@@ -49,35 +51,40 @@ int validarCPF(char *cpf)
 
 int main()
 {
-
+    //Cria ponteiro FILE de dois arquivos
     FILE *arquivoCpf,*arquivoCpfValidado;
     int cont=0; 
     char CPF[12];
     
+    //Abre o arquivo arquivoCpf.txt no modo leitura 
+    //Abre o arquivo arquivoCpfValidado.txt no modo escrita
     arquivoCpf = fopen("arquivoCpf.txt","r+");
     arquivoCpfValidado = fopen("arquivoCpfValidado.txt","w+");
     
+    //verifica se o arquivo arquivoCpf.txt existe, caso não encerra o programa
     if(arquivoCpf == NULL){
         printf("Não foi possivel abrir o arquivo!");
         return 1;
     }
     
+    //cria um laço de repetição para ler os CPFs do arquivoCpf como string e já valida
     while(fscanf(arquivoCpf,"%s",CPF)!=EOF){
         if (validarCPF(CPF) == 2){
-            //2 - Número Inválido
+            //2 - Número Inválido e escreve no arquivoCpfValidado
             fprintf(arquivoCpfValidado,"%s => Numero invalido\n",CPF);
         }
         else if (validarCPF(CPF) == 1){
-            //1 - CPF Válido
+            //1 - CPF Válido e escreve no arquivoCpfValidado
             fprintf(arquivoCpfValidado,"%s => CPF valido\n",CPF);
         }
         else if (validarCPF(CPF) == 0){
-            //0 - CPF Inválido
+            //0 - CPF Inválido e escreve no arquivoCpfValidado
             fprintf(arquivoCpfValidado,"%s => CPF invalido\n",CPF);
         }
         cont++;
     }
     
+    //fecha os arquivos
     fclose(arquivoCpf);
     fclose(arquivoCpfValidado);
 	imprime();
